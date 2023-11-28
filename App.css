@@ -108,3 +108,21 @@ section button{
   height: 30px;
   margin: 15px;
 }
+
+/* ----------글상세 태원님 css ----------
+.board-detail{
+  margin-top: 40px;
+  padding: 20px;
+  background: #eee;
+
+}
+.board-head{
+  background: black;
+  width: 100%;
+  display: flex;
+  color: white;
+  padding: 20px;
+  font-weight: 600;
+  font-size: 20px;
+}
+ */
