@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import './MainPage.css';
+import Search from './Search';
+import { useState } from 'react';
+import axios from 'axios';
 
 const MainPage = () => {
+  
+  const [todoList, setTodoList] = useState([]);
+
+  const fetchData = async () => {
+    const response = await axios.get('http://localhost:3001/api/todo');
+    setTodoList(response.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+
+
   const linksTen = [
     { id: 1, text: '10대 개시판', path: '/AgeOne/10age' },
   ];
@@ -14,15 +31,36 @@ const MainPage = () => {
   const linksthirty = [
     { id: 3, text: '30대 개시판', path: '/AgeThree/30age' },
   ];
-
+  const onSubmitHandler = async (e) => {
+    const text = e.target.text.value;
+    await axios.post('http://localhost:3001/api/todo', { text });
+    fetchData();
+    alert('등록 성공');   
+        
+  //   fetch('http://localhost:3001/api/todo',{
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       text,
+  //     }),
+  //   });
+  };
   return (
+    
     <div>
+      <form onSubmit={onSubmitHandler}>
+        <input name ='text'/>
+        <input type='submit'value='추가'/>
+      </form>
       <div className='Titles'>
         <Link to="/" style={{ textDecoration: "none" }}>거지 키우기</Link>
         {/* 검색 */}
-        <button className='Button'>검색</button>
+        <Search className='search'/>
+       
         {/* 찾을 내용 검색 박스 */}
-        <input className='Input'></input>
+       
       </div>
 
       <div className='agecomunuty'>
@@ -38,7 +76,7 @@ const MainPage = () => {
           <Link to="/AgeThree/30age" style={{ textDecoration: "none" }}>30대</Link>
         </div>
       </div>
-
+    
       {/* 카테고리 별 개시물 목록 */}
       <div className='category'>
         {/* 10대 개시물 링크 */}
@@ -50,6 +88,17 @@ const MainPage = () => {
                 <Link to={link.path}>{link.text}</Link>
               </li>
             ))}
+            <li>
+            
+            {todoList.map((todo) => (
+              <div key={todo.id}>
+                
+                <div>{todo.text}</div>
+        
+              </div>
+            ))}
+            
+            </li>
           </ul>
         </div>
         {/* {renderLinksByClass('One')} */}

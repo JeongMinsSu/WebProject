@@ -2,28 +2,33 @@ import { useParams } from 'react-router-dom';
 import './page.css';
 import { Link } from 'react-router-dom';
 import Writing from '../Writing.js';
-import Header from '../layout/Header.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AgeOne = () => {
 
     const { category } = useParams();
-    const [dataList, setDataList] = useState([]);
+    const [todoList, setTodoList] = useState([]);
 
-    useEffect(() => {
-      // 데이터를 불러오는 비동기 함수
-      const fetchData = async () => {
-        try {
-          const response = await (await axios.get('http://localhost:3001/posts')).data; // 데이터를 가져올 엔드포인트 URL로 변경하세요
-          setDataList(response.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-        // 컴포넌트가 마운트될 때 데이터를 불러옴
+  const fetchData = async () => {
+    const response = await axios.get('http://localhost:3001/api/todo');
+    setTodoList(response.data);
+  }
+
+  useEffect(() => {
     fetchData();
-  }, []); // 빈 배열을 전달하여 한 번만 실행되도록 함
+  }, []);
+  //   useEffect(() => {
+  //     // 데이터를 불러오는 비동기 함수
+  //     const apiUrl = 'http://localhost:3001/api/todo';
+      
+  //     axios.get(apiUrl).then(response => {
+  //       setDataList(response.dataList);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:',error);
+  //     });
+  // }, []); // 빈 배열을 전달하여 한 번만 실행되도록 함
 
     //
     
@@ -64,10 +69,20 @@ const AgeOne = () => {
 
             <tbody>
             <tr>
-            {dataList.map((posts) => (
-          <li key={posts.id}>{posts.title}</li>
-          // 실제 데이터의 구조에 따라 변경하세요
-        ))}
+            
+              <ul>
+                {todoList.map((todo) => (
+                <li key={todo.id}>
+                  <div>
+                    {todo.title}
+                    {todo.username}
+                    {todo.content}
+                  </div>
+                </li>
+                ))}
+              </ul>
+            
+  
                 <th>임시데이터사진</th>
                 <th>임시데이터제목넣기</th>
                 <th>임시데이터날짜2023.11.15</th>

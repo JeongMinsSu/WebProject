@@ -9,27 +9,29 @@ const Writing = () => {
         setIsVisible((prevIsVisible => !prevIsVisible));
     };
 
-    const [post, setPost] = useState({
-        id:"",
-        title:"",
-        date:"",
-    });
-    
-    const {id, title, date} = post;
-    const navigate = useNavigate();
 
-    const saveBoard = async()=>{
-        await axios.post('http://localhost:3001/posts', post).then((res) => {
-            alert ('등록 완료');
-            navigate('/MainPage')
-        })
+    const saveBoard = async(e)=>{
+        const title = e.target.title.value;
+        const username = e.target.username.value;
+        const content = e.target.content.value;
+        fetch('http://localhost:3001/api/todo',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([{
+                title,
+                username,
+                content,
+            }]),
+        });
+        
+        // await axios.post('http://localhost:3001/api/todo', {title,user,text});
+        // alert ('등록 완료');    
     }
     
 // name을 키값, value를 내용으로 가져온다
-    const handleForm = (e)=>{
-        setPost({[e.target.name]:e.target.value})
-        console.log(e.target.value)
-    }
+    
     // onchange={handleChangeTitle}함수 변화가 오면 계속 변함
 
     // 이미지 넣기
@@ -59,27 +61,30 @@ const Writing = () => {
                 </div>
             </header>
             <main className='Main'>
-                <form action='#' method='get'>
-                <input type="file" value={id} onChange={handleImageChange} />
+                <form onSubmit={saveBoard}>
+                    <input type="file" value="" onChange={handleImageChange} />
                     {image && <img src={image} alt="이미지" style={{ width: '100px', height: '100px' }} />}
                     <div className='mini_title'>
-                        <label for="title">제목 </label>
-                        <input className='title_name' value={title}name='title' type='text'onChange={handleForm}/>
+                        <label for="title">제목: </label>
+                        <input className='title_name' name='title' type='text'/>
                     </div>
                     <div className='mini_title'>
-                        <label for="title">날짜 </label>
-                        <input className='date' value={date}name='date' type='text'onChange={handleForm}/>
+                        <label for="title">작성자: </label>
+                        <input className='date' name='username' type='text'/>
                     </div>
+                    <article>
+                        <textarea className='Main_content'type='text'name='content'/>
+                    </article>
+                    <section>
+                        <div>
+                            {/* 제목,날짜 등 input 컴포넌트의 name 을 가져와서 saveBoard로 post해서 값을 추가  */}
+                            {/* form 안에 post 요청을 보낼때 query 파라미터로 한번 보내버리기 때문에 e.prevent를 실행해야함 */}
+                            <input type='submit' value="등록"/>
+                            <button onClick={handleCancle}>취소</button>
+                        </div>
+                    </section>
                 </form>
-                <article>
-                    <textarea className='Main_content'type='text'name='content'/>
-                </article>
-                <section>
-                    <div>
-                        <button type='submit'onClick={saveBoard}>등록</button>
-                        <button onClick={handleCancle}>취소</button>
-                    </div>
-                </section>
+                
             </main>
         </div>
     ) : null ;
