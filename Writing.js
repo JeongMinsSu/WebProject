@@ -14,20 +14,11 @@ const Writing = () => {
         const title = e.target.title.value;
         const username = e.target.username.value;
         const content = e.target.content.value;
-        fetch('http://localhost:3001/api/todo',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify([{
-                title,
-                username,
-                content,
-            }]),
-        });
         
-        // await axios.post('http://localhost:3001/api/todo', {title,user,text});
-        // alert ('등록 완료');    
+        await axios.post('http://localhost:3001/api/todo', {title,username,content
+    });
+        saveBoard();
+        alert ('등록 완료');    
     }
     
 // name을 키값, value를 내용으로 가져온다

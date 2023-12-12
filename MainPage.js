@@ -93,7 +93,7 @@ const MainPage = () => {
             {todoList.map((todo) => (
               <div key={todo.id}>
                 
-                <div>{todo.text}</div>
+                <div>{todo.title}</div>
         
               </div>
             ))}

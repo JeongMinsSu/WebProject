@@ -10,8 +10,8 @@ let user = 1;
 const todoList = [
     {
         username: '익명'+user,
-        text: '할일 : 청소',
-        title: '제목1',
+        text: '',
+        title: '',
         content: '',
     },
 ];
@@ -26,7 +26,7 @@ app.post('/api/todo',(req, res) => {
     todoList.push({
         text,
         title,
-        username,
+        username ,
         content,
     })
     return res.send('success');
